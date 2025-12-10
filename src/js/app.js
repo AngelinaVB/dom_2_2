@@ -4,7 +4,7 @@ function createBoard() {
   for (let i = 0; i < 16; i++) {
     const cell = document.createElement("div");
     cell.classList.add("cell");
-    board.appendChild(cell);
+    board.append(cell);
   }
 }
 
@@ -20,7 +20,7 @@ function createCharacter() {
   const randomCell = document.querySelector(
     `.cell:nth-child(${getRandomInt(1, 17)})`,
   );
-  randomCell.appendChild(img);
+  randomCell.append(img);
 
   return img;
 }
@@ -34,7 +34,7 @@ export default function moveCharacter(character) {
     newCell = allCells[getRandomInt(0, 16)];
   } while (newCell === currentCell);
 
-  newCell.appendChild(character);
+  newCell.append(character);
 }
 
 createBoard();
