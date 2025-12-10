@@ -1,5 +1,3 @@
-import goblin from '../img/goblin.png'
-
 function createBoard() {
   const board = document.getElementById("board");
 
