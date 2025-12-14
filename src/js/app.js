@@ -1,45 +1,99 @@
-function createBoard() {
-  const board = document.getElementById("board");
+export class Board {
+  constructor() {
+    this.board = null;
+  }
 
-  for (let i = 0; i < 16; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    board.append(cell);
+  createBoard(number) {
+    const board = document.createElement("div");
+    board.classList.add("board");
+
+    for (let i = 0; i < Math.floor(number) ** 2; i += 1) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      board.append(cell);
+    }
+    this.board = board;
+  }
+
+  getBoard(number) {
+    this.createBoard(number);
+    return this.board;
   }
 }
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+export class Сharacter {
+  constructor() {
+    this.char = undefined;
+  }
+
+  createChar() {
+    const char = document.createElement("div");
+    char.classList.add("img");
+    this.char = char;
+  }
+
+  getChar() {
+    this.createChar();
+    return this.char;
+  }
 }
 
-function createCharacter() {
-  const img = document.createElement('img');
-  img.src = 'src/img/goblin.png';
-  img.alt = 'Изображение персонажа';
+export class GamePlay {
+  constructor(board, char) {
+    this.board = board;
+    this.boardSize = 4;
+    this.char = char;
+    this.activeChar = null;
+  }
 
-  const randomCell = document.querySelector(
-    `.cell:nth-child(${getRandomInt(1, 17)})`,
-  );
-  randomCell.append(img);
+  init() {
+    this.redrawBoard();
 
-  return img;
+    this.start();
+  }
+
+  redrawBoard() {
+    const board = this.board.getBoard(this.boardSize);
+    const body = document.querySelector("body");
+    const container = document.createElement("div");
+    container.classList.add("container");
+    container.append(board);
+    body.insertBefore(container, body.firstChild);
+    this.cells = [...board.children];
+  }
+
+  generateposition() {
+    const position = Math.floor(Math.random() * this.boardSize ** 2);
+    if (position === this.position) {
+      this.generateposition();
+      return;
+    }
+    this.deletedChar();
+    this.position = position;
+    this.adventChar();
+  }
+
+  deletedChar() {
+    if (this.activeChar === null) {
+      return;
+    }
+    this.cells[this.position].firstChild.remove();
+  }
+
+  adventChar() {
+    this.activeChar = this.char.getChar();
+    this.cells[this.position].append(this.activeChar);
+  }
+
+  start() {
+    setInterval(() => {
+      this.generateposition();
+    }, 1000);
+  }
 }
 
-export default function moveCharacter(character) {
-  const allCells = document.querySelectorAll(".cell");
-  let currentCell = character.parentNode;
+const board = new Board();
+const char = new Сharacter();
+const gameplay = new GamePlay(board, char);
 
-  let newCell;
-  do {
-    newCell = allCells[getRandomInt(0, 16)];
-  } while (newCell === currentCell);
-
-  newCell.append(character);
-}
-
-createBoard();
-const character = createCharacter();
-
-setInterval(() => {
-  moveCharacter(character);
-}, 1000);
+gameplay.init();
