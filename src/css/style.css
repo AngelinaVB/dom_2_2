@@ -31,7 +31,6 @@ body {
 .img {  
             width: 90%;  
             height: 90%; 
-            background-image: url('../img/goblin.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center; 

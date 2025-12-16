@@ -1,3 +1,5 @@
+/* import image from "../img/goblin.png"; */
+
 export class Board {
   constructor() {
     this.board = null;
@@ -7,11 +9,13 @@ export class Board {
     const board = document.createElement("div");
     board.classList.add("board");
 
-    for (let i = 0; i < Math.floor(number) ** 2; i += 1) {
+    let i = 0;
+    do {
       const cell = document.createElement("div");
       cell.classList.add("cell");
       board.append(cell);
-    }
+      i++;
+    } while (i < Math.floor(number) ** 2);
     this.board = board;
   }
 
@@ -23,26 +27,23 @@ export class Board {
 
 export class Сharacter {
   constructor() {
-    this.char = undefined;
+    this.image = undefined;
   }
 
   createChar() {
-    const char = document.createElement("div");
-    char.classList.add("img");
-    this.char = char;
-  }
-
-  getChar() {
-    this.createChar();
-    return this.char;
+    const image = document.createElement("img");
+    image.src = "../goblin.png";
+    image.alt = "Изображение персонажа";
+    document.querySelector("body").append(image);
+    return (this.image = image);
   }
 }
 
 export class GamePlay {
-  constructor(board, char) {
+  constructor(board, image) {
     this.board = board;
     this.boardSize = 4;
-    this.char = char;
+    this.image = image;
     this.activeChar = null;
   }
 
@@ -58,7 +59,7 @@ export class GamePlay {
     const container = document.createElement("div");
     container.classList.add("container");
     container.append(board);
-    body.insertBefore(container, body.firstChild);
+    body.append(container, body.firstChild);
     this.cells = [...board.children];
   }
 
@@ -81,7 +82,7 @@ export class GamePlay {
   }
 
   adventChar() {
-    this.activeChar = this.char.getChar();
+    this.activeChar = this.image.createChar();
     this.cells[this.position].append(this.activeChar);
   }
 
@@ -93,7 +94,7 @@ export class GamePlay {
 }
 
 const board = new Board();
-const char = new Сharacter();
-const gameplay = new GamePlay(board, char);
+const image = new Сharacter();
+const gameplay = new GamePlay(board, image);
 
 gameplay.init();
