@@ -1,6 +1,6 @@
-/* import image from "../img/goblin.png"; */
+import imageGoblin from "../img/goblin.png";
 
-export class Board {
+export default class Board {
   constructor() {
     this.board = null;
   }
@@ -30,9 +30,9 @@ export class Сharacter {
     this.image = undefined;
   }
 
-  createChar() {
+  createImage() {
     const image = document.createElement("img");
-    image.src = "../goblin.png";
+    image.src = imageGoblin;
     image.alt = "Изображение персонажа";
     document.querySelector("body").append(image);
     return (this.image = image);
@@ -44,7 +44,8 @@ export class GamePlay {
     this.board = board;
     this.boardSize = 4;
     this.image = image;
-    this.activeChar = null;
+    this.activeImage = null;
+    this.position = null;
   }
 
   init() {
@@ -64,26 +65,29 @@ export class GamePlay {
   }
 
   generateposition() {
-    const position = Math.floor(Math.random() * this.boardSize ** 2);
-    if (position === this.position) {
-      this.generateposition();
-      return;
-    }
-    this.deletedChar();
-    this.position = position;
-    this.adventChar();
+    let randomNumber;
+
+    do {
+      randomNumber = Math.floor(Math.random() * this.boardSize ** 2);
+    } while (randomNumber === this.position);
+
+    this.deletedImage();
+    this.position = randomNumber;
+    this.adventImage();
+
+    return;
   }
 
-  deletedChar() {
-    if (this.activeChar === null) {
+  deletedImage() {
+    if (this.activeImage === null) {
       return;
     }
     this.cells[this.position].firstChild.remove();
   }
 
-  adventChar() {
-    this.activeChar = this.image.createChar();
-    this.cells[this.position].append(this.activeChar);
+  adventImage() {
+    this.activeImage = this.image.createImage();
+    this.cells[this.position].append(this.activeImage);
   }
 
   start() {
@@ -92,6 +96,7 @@ export class GamePlay {
     }, 1000);
   }
 }
+
 
 const board = new Board();
 const image = new Сharacter();
