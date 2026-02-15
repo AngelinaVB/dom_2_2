@@ -35,17 +35,17 @@ export class Сharacter {
     image.src = imageGoblin;
     image.alt = "Изображение персонажа";
     document.querySelector("body").append(image);
+    document.body.removeChild(image);
     return (this.image = image);
   }
 }
 
 export class GamePlay {
-  constructor(board, image) {
+  constructor(board) {
     this.board = board;
     this.boardSize = 4;
     this.image = image;
     this.activeImage = null;
-    this.position = null;
   }
 
   init() {
@@ -74,29 +74,38 @@ export class GamePlay {
     this.deletedImage();
     this.position = randomNumber;
     this.adventImage();
-
+    this.movImage();
     return;
   }
 
   deletedImage() {
+    const del = document.querySelector('img');
+
     if (this.activeImage === null) {
       return;
     }
-    this.cells[this.position].firstChild.remove();
+    if (del !== null) {
+      this.cells[this.position].firstChild.remove();
+    }
   }
 
   adventImage() {
     this.activeImage = this.image.createImage();
+  }
+
+  movImage() {
     this.cells[this.position].append(this.activeImage);
   }
 
   start() {
-    setInterval(() => {
+    let timerId = setInterval(() => {
       this.generateposition();
+      setTimeout(() => {
+        clearInterval(timerId);
+      }, 7000);
     }, 1000);
   }
 }
-
 
 const board = new Board();
 const image = new Сharacter();
